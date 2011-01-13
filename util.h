@@ -68,21 +68,6 @@ T* alignup(T* p)
     return u.ptr;
 }
 
-#ifdef __WXMSW__
-#define MSG_NOSIGNAL        0
-#define MSG_DONTWAIT        0
-#ifndef UINT64_MAX
-#define UINT64_MAX          _UI64_MAX
-#define INT64_MAX           _I64_MAX
-#define INT64_MIN           _I64_MIN
-#endif
-#ifndef S_IRUSR
-#define S_IRUSR             0400
-#define S_IWUSR             0200
-#endif
-#define unlink              _unlink
-typedef int socklen_t;
-#else
 #define WSAGetLastError()   errno
 #define WSAEWOULDBLOCK      EWOULDBLOCK
 #define WSAEMSGSIZE         EMSGSIZE
@@ -102,18 +87,15 @@ inline void Sleep(int64 n)
 {
     boost::thread::sleep(boost::get_system_time() + boost::posix_time::milliseconds(n));
 }
-#endif
 
 inline int myclosesocket(SOCKET& hSocket)
 {
     if (hSocket == INVALID_SOCKET)
         return WSAENOTSOCK;
-#ifdef __WXMSW__
-    int ret = closesocket(hSocket);
-#else
+
     int ret = close(hSocket);
-#endif
     hSocket = INVALID_SOCKET;
+
     return ret;
 }
 #define closesocket(s)      myclosesocket(s)
@@ -169,9 +151,6 @@ int GetFilesize(FILE* file);
 void GetDataDir(char* pszDirRet);
 string GetConfigFile();
 void ReadConfigFile(map<string, string>& mapSettingsRet, map<string, vector<string> >& mapMultiSettingsRet);
-#ifdef __WXMSW__
-string MyGetSpecialFolderPath(int nFolder, bool fCreate);
-#endif
 string GetDefaultDataDir();
 string GetDataDir();
 void ShrinkDebugFile();
@@ -196,16 +175,6 @@ void AddTimeData(unsigned int ip, int64 nTime);
 // Wrapper to automatically initialize critical sections
 class CCriticalSection
 {
-#ifdef __WXMSW__
-protected:
-    CRITICAL_SECTION cs;
-public:
-    explicit CCriticalSection() { InitializeCriticalSection(&cs); }
-    ~CCriticalSection() { DeleteCriticalSection(&cs); }
-    void Enter() { EnterCriticalSection(&cs); }
-    void Leave() { LeaveCriticalSection(&cs); }
-    bool TryEnter() { return TryEnterCriticalSection(&cs); }
-#else
 protected:
     boost::interprocess::interprocess_recursive_mutex mutex;
 public:
@@ -214,7 +183,6 @@ public:
     void Enter() { mutex.lock(); }
     void Leave() { mutex.unlock(); }
     bool TryEnter() { return mutex.try_lock(); }
-#endif
 public:
     const char* pszFile;
     int nLine;
@@ -361,13 +329,10 @@ inline void PrintHex(const vector<unsigned char>& vch, const char* pszFormat="%s
 inline int64 GetPerformanceCounter()
 {
     int64 nCounter = 0;
-#ifdef __WXMSW__
-    QueryPerformanceCounter((LARGE_INTEGER*)&nCounter);
-#else
     timeval t;
     gettimeofday(&t, NULL);
     nCounter = t.tv_sec * 1000000 + t.tv_usec;
-#endif
+
     return nCounter;
 }
 
@@ -395,11 +360,7 @@ void skipspaces(T& it)
 
 inline bool IsSwitchChar(char c)
 {
-#ifdef __WXMSW__
-    return c == '-' || c == '/';
-#else
     return c == '-';
-#endif
 }
 
 inline string GetArg(const string& strArg, const string& strDefault)
@@ -446,11 +407,6 @@ inline string FormatVersion(int nVersion)
 
 inline void heapchk()
 {
-#ifdef __WXMSW__
-    /// for debugging
-    //if (_heapchk() != _HEAPOK)
-    //    DebugBreak();
-#endif
 }
 
 // Randomize the stack to help protect against buffer overrun exploits
@@ -560,38 +516,6 @@ inline uint160 Hash160(const vector<unsigned char>& vch)
 
 // Note: It turns out we might have been able to use boost::thread
 // by using TerminateThread(boost::thread.native_handle(), 0);
-#ifdef __WXMSW__
-typedef HANDLE pthread_t;
-
-inline pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
-{
-    DWORD nUnused = 0;
-    HANDLE hthread =
-        CreateThread(
-            NULL,                        // default security
-            0,                           // inherit stack size from parent
-            (LPTHREAD_START_ROUTINE)pfn, // function pointer
-            parg,                        // argument
-            0,                           // creation option, start immediately
-            &nUnused);                   // thread identifier
-    if (hthread == NULL)
-    {
-        printf("Error: CreateThread() returned %d\n", GetLastError());
-        return (pthread_t)0;
-    }
-    if (!fWantHandle)
-    {
-        CloseHandle(hthread);
-        return (pthread_t)-1;
-    }
-    return hthread;
-}
-
-inline void SetThreadPriority(int nPriority)
-{
-    SetThreadPriority(GetCurrentThread(), nPriority);
-}
-#else
 inline pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
 {
     pthread_t hthread = 0;
@@ -631,7 +555,6 @@ inline void ExitThread(unsigned int nExitCode)
 {
     pthread_exit((void*)nExitCode);
 }
-#endif
 
 
 
@@ -639,20 +562,5 @@ inline void ExitThread(unsigned int nExitCode)
 
 inline bool AffinityBugWorkaround(void(*pfn)(void*))
 {
-#ifdef __WXMSW__
-    // Sometimes after a few hours affinity gets stuck on one processor
-    DWORD dwProcessAffinityMask = -1;
-    DWORD dwSystemAffinityMask = -1;
-    GetProcessAffinityMask(GetCurrentProcess(), &dwProcessAffinityMask, &dwSystemAffinityMask);
-    DWORD dwPrev1 = SetThreadAffinityMask(GetCurrentThread(), dwProcessAffinityMask);
-    DWORD dwPrev2 = SetThreadAffinityMask(GetCurrentThread(), dwProcessAffinityMask);
-    if (dwPrev2 != dwProcessAffinityMask)
-    {
-        printf("AffinityBugWorkaround() : SetThreadAffinityMask=%d, ProcessAffinityMask=%d, restarting thread\n", dwPrev2, dwProcessAffinityMask);
-        if (!CreateThread(pfn, NULL))
-            printf("Error: CreateThread() failed\n");
-        return true;
-    }
-#endif
     return false;
 }
