@@ -118,12 +118,10 @@ inline int myclosesocket(SOCKET& hSocket)
 }
 #define closesocket(s)      myclosesocket(s)
 
-#ifndef GUI
 inline const char* _(const char* psz)
 {
     return psz;
 }
-#endif
 
 
 
