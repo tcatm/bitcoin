@@ -263,11 +263,7 @@ public:
         ss.reserve(18);
         ss << FLATDATA(pchReserved) << ip << port;
 
-        #if defined(_MSC_VER) && _MSC_VER < 1300
-        return vector<unsigned char>((unsigned char*)&ss.begin()[0], (unsigned char*)&ss.end()[0]);
-        #else
         return vector<unsigned char>(ss.begin(), ss.end());
-        #endif
     }
 
     struct sockaddr_in GetSockAddr() const

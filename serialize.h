@@ -10,16 +10,10 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/tuple/tuple_comparison.hpp>
 #include <boost/tuple/tuple_io.hpp>
-#if defined(_MSC_VER) || defined(__BORLANDC__)
-typedef __int64  int64;
-typedef unsigned __int64  uint64;
-#else
+
 typedef long long  int64;
 typedef unsigned long long  uint64;
-#endif
-#if defined(_MSC_VER) && _MSC_VER < 1300
-#define for  if (false) ; else for
-#endif
+
 class CScript;
 class CDataStream;
 class CAutoFile;
@@ -816,12 +810,10 @@ public:
         Init(nTypeIn, nVersionIn);
     }
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
     CDataStream(const char* pbegin, const char* pend, int nTypeIn=SER_NETWORK, int nVersionIn=VERSION) : vch(pbegin, pend)
     {
         Init(nTypeIn, nVersionIn);
     }
-#endif
 
     CDataStream(const vector_type& vchIn, int nTypeIn=SER_NETWORK, int nVersionIn=VERSION) : vch(vchIn.begin(), vchIn.end())
     {
@@ -907,7 +899,6 @@ public:
             vch.insert(it, first, last);
     }
 
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
     void insert(iterator it, const char* first, const char* last)
     {
         if (it == vch.begin() + nReadPos && last - first <= nReadPos)
@@ -919,7 +910,6 @@ public:
         else
             vch.insert(it, first, last);
     }
-#endif
 
     iterator erase(iterator it)
     {

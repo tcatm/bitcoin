@@ -2037,11 +2037,6 @@ int CommandLineRPC(int argc, char *argv[])
 #ifdef TEST
 int main(int argc, char *argv[])
 {
-#ifdef _MSC_VER
-    // Turn off microsoft heap dump noise
-    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
-    _CrtSetReportFile(_CRT_WARN, CreateFile("NUL", GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, 0));
-#endif
     setbuf(stdin, NULL);
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
