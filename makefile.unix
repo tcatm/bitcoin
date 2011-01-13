@@ -52,7 +52,7 @@ obj/sha256.o: sha256.cpp
 obj/nogui/%.o: %.cpp $(HEADERS)
 	g++ -c $(CFLAGS) -o $@ $<
 
-bitcoind: $(OBJS:obj/%=obj/nogui/%) obj/sha256.o
+bitcoind: $(OBJS) obj/sha256.o
 	g++ $(CFLAGS) -o $@ $^ $(LIBS)
 
 
