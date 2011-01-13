@@ -2,12 +2,6 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file license.txt or http://www.opensource.org/licenses/mit-license.php.
 
-#ifdef _MSC_VER
-#pragma warning(disable:4786)
-#pragma warning(disable:4804)
-#pragma warning(disable:4805)
-#pragma warning(disable:4717)
-#endif
 #ifdef _WIN32_WINNT
 #undef _WIN32_WINNT
 #endif
@@ -20,11 +14,6 @@
 #define __STDC_LIMIT_MACROS // to enable UINT64_MAX from stdint.h
 #if (defined(__unix__) || defined(unix)) && !defined(USG)
 #include <sys/param.h>  // to get BSD define
-#endif
-#ifdef __WXMAC_OSX__
-#ifndef BSD
-#define BSD 1
-#endif
 #endif
 #include <openssl/buffer.h>
 #include <openssl/ecdsa.h>
@@ -72,16 +61,6 @@
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/parsers.hpp>
 
-#ifdef __WXMSW__
-#include <windows.h>
-#include <winsock2.h>
-#include <mswsock.h>
-#include <shlobj.h>
-#include <shlwapi.h>
-#include <io.h>
-#include <process.h>
-#include <malloc.h>
-#else
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <sys/socket.h>
@@ -94,7 +73,6 @@
 #include <ifaddrs.h>
 #include <fcntl.h>
 #include <signal.h>
-#endif
 #ifdef BSD
 #include <netinet/in.h>
 #endif
