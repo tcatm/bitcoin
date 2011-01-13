@@ -26,14 +26,6 @@
 #define BSD 1
 #endif
 #endif
-#ifdef GUI
-#include <wx/wx.h>
-#include <wx/stdpaths.h>
-#include <wx/snglinst.h>
-#include <wx/utils.h>
-#include <wx/clipbrd.h>
-#include <wx/taskbar.h>
-#endif
 #include <openssl/buffer.h>
 #include <openssl/ecdsa.h>
 #include <openssl/evp.h>
@@ -125,12 +117,7 @@ using namespace boost;
 #include "irc.h"
 #include "main.h"
 #include "rpc.h"
-#ifdef GUI
-#include "uibase.h"
-#include "ui.h"
-#else
 #include "noui.h"
-#endif
 #include "init.h"
 
 #include "xpm/addressbook16.xpm"
