@@ -17,10 +17,6 @@
 
 void ExitTimeout(void* parg)
 {
-#ifdef __WXMSW__
-    Sleep(5000);
-    ExitProcess(0);
-#endif
 }
 
 void Shutdown(void* parg)
@@ -78,7 +74,7 @@ int main(int argc, char* argv[])
             fCommandLine = true;
     fDaemon = !fCommandLine;
 
-#ifdef __WXGTK__
+#ifdef __FORK__
     if (!fCommandLine)
     {
         // Daemonize
@@ -120,26 +116,14 @@ bool AppInit(int argc, char* argv[])
 
 bool AppInit2(int argc, char* argv[])
 {
-#ifdef _MSC_VER
-    // Turn off microsoft heap dump noise
-    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
-    _CrtSetReportFile(_CRT_WARN, CreateFileA("NUL", GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, 0));
-#endif
-#if _MSC_VER >= 1400
-    // Disable confusing "helpful" text message on abort, ctrl-c
-    _set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
-#endif
-#ifndef __WXMSW__
     umask(077);
-#endif
-#ifndef __WXMSW__
+
     // Clean shutdown on SIGTERM
     struct sigaction sa;
     sa.sa_handler = HandleSIGTERM;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sigaction(SIGTERM, &sa, NULL);
-#endif
 
     //
     // Parameters
