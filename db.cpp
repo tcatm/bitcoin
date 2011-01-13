@@ -660,13 +660,6 @@ bool CWalletDB::LoadWallet()
     int nFileVersion = 0;
     vector<uint256> vWalletUpgrade;
 
-    // Modify defaults
-#ifndef __WXMSW__
-    // Tray icon sometimes disappears on 9.10 karmic koala 64-bit, leaving no way to access the program
-    fMinimizeToTray = false;
-    fMinimizeOnClose = false;
-#endif
-
     //// todo: shouldn't we catch exceptions and try to recover and continue?
     CRITICAL_BLOCK(cs_mapKeys)
     CRITICAL_BLOCK(cs_mapWallet)
