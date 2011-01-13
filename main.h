@@ -1163,11 +1163,7 @@ public:
         fflush(fileout);
         if (!IsInitialBlockDownload() || (nBestHeight+1) % 500 == 0)
         {
-#ifdef __WXMSW__
-            _commit(_fileno(fileout));
-#else
             fsync(fileno(fileout));
-#endif
         }
 
         return true;
