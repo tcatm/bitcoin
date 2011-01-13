@@ -484,14 +484,8 @@ CNode* ConnectNode(CAddress addrConnect, int64 nTimeout)
         printf("connected %s\n", addrConnect.ToStringLog().c_str());
 
         // Set to nonblocking
-#ifdef __WXMSW__
-        u_long nOne = 1;
-        if (ioctlsocket(hSocket, FIONBIO, &nOne) == SOCKET_ERROR)
-            printf("ConnectSocket() : ioctlsocket nonblocking setting failed, error %d\n", WSAGetLastError());
-#else
         if (fcntl(hSocket, F_SETFL, O_NONBLOCK) == SOCKET_ERROR)
             printf("ConnectSocket() : fcntl nonblocking setting failed, error %d\n", errno);
-#endif
 
         // Add node
         CNode* pnode = new CNode(hSocket, addrConnect, false);
@@ -1228,18 +1222,6 @@ bool BindListenPort(string& strError)
     int nOne = 1;
     addrLocalHost.port = GetDefaultPort();
 
-#ifdef __WXMSW__
-    // Initialize Windows Sockets
-    WSADATA wsadata;
-    int ret = WSAStartup(MAKEWORD(2,2), &wsadata);
-    if (ret != NO_ERROR)
-    {
-        strError = strprintf("Error: TCP/IP socket library failed to start (WSAStartup returned error %d)", ret);
-        printf("%s\n", strError.c_str());
-        return false;
-    }
-#endif
-
     // Create socket for listening for incoming connections
     hListenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (hListenSocket == INVALID_SOCKET)
@@ -1254,18 +1236,12 @@ bool BindListenPort(string& strError)
     setsockopt(hListenSocket, SOL_SOCKET, SO_NOSIGPIPE, (void*)&nOne, sizeof(int));
 #endif
 
-#ifndef __WXMSW__
     // Allow binding if the port is still in TIME_WAIT state after
     // the program was closed and restarted.  Not an issue on windows.
     setsockopt(hListenSocket, SOL_SOCKET, SO_REUSEADDR, (void*)&nOne, sizeof(int));
-#endif
 
-#ifdef __WXMSW__
     // Set to nonblocking, incoming connections will also inherit this
-    if (ioctlsocket(hListenSocket, FIONBIO, (u_long*)&nOne) == SOCKET_ERROR)
-#else
     if (fcntl(hListenSocket, F_SETFL, O_NONBLOCK) == SOCKET_ERROR)
-#endif
     {
         strError = strprintf("Error: Couldn't set properties on socket for incoming connections (error %d)", WSAGetLastError());
         printf("%s\n", strError.c_str());
@@ -1307,29 +1283,6 @@ void StartNode(void* parg)
     if (pnodeLocalHost == NULL)
         pnodeLocalHost = new CNode(INVALID_SOCKET, CAddress("127.0.0.1", nLocalServices));
 
-#ifdef __WXMSW__
-    // Get local host ip
-    char pszHostName[1000] = "";
-    if (gethostname(pszHostName, sizeof(pszHostName)) != SOCKET_ERROR)
-    {
-        struct hostent* phostent = gethostbyname(pszHostName);
-        if (phostent)
-        {
-            // Take the first IP that isn't loopback 127.x.x.x
-            for (int i = 0; phostent->h_addr_list[i] != NULL; i++)
-                printf("host ip %d: %s\n", i, CAddress(*(unsigned int*)phostent->h_addr_list[i]).ToStringIP().c_str());
-            for (int i = 0; phostent->h_addr_list[i] != NULL; i++)
-            {
-                CAddress addr(*(unsigned int*)phostent->h_addr_list[i], GetDefaultPort(), nLocalServices);
-                if (addr.IsValid() && addr.GetByte(3) != 127)
-                {
-                    addrLocalHost = addr;
-                    break;
-                }
-            }
-        }
-    }
-#else
     // Get local host ip
     struct ifaddrs* myaddrs;
     if (getifaddrs(&myaddrs) == 0)
@@ -1364,7 +1317,7 @@ void StartNode(void* parg)
         }
         freeifaddrs(myaddrs);
     }
-#endif
+
     printf("addrLocalHost = %s\n", addrLocalHost.ToString().c_str());
 
     if (fUseProxy || mapArgs.count("-connect") || fNoListen)
@@ -1441,10 +1394,6 @@ public:
             if (closesocket(hListenSocket) == SOCKET_ERROR)
                 printf("closesocket(hListenSocket) failed with error %d\n", WSAGetLastError());
 
-#ifdef __WXMSW__
-        // Shutdown Windows Sockets
-        WSACleanup();
-#endif
     }
 }
 instance_of_cnetcleanup;
