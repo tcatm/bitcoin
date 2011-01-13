@@ -3,19 +3,9 @@
 // file license.txt or http://www.opensource.org/licenses/mit-license.php.
 
 
-#if defined(_MSC_VER) || defined(__BORLANDC__)
-typedef __int64  int64;
-typedef unsigned __int64  uint64;
-#else
 typedef long long  int64;
 typedef unsigned long long  uint64;
-#endif
-#if defined(_MSC_VER) && _MSC_VER < 1300
-#define for  if (false) ; else for
-#endif
-#ifndef _MSC_VER
 #define __forceinline  inline
-#endif
 
 #define foreach             BOOST_FOREACH
 #define loop                for (;;)
@@ -32,15 +22,9 @@ typedef unsigned long long  uint64;
 #define snprintf my_snprintf
 
 #ifndef PRI64d
-#if defined(_MSC_VER) || defined(__BORLANDC__) || defined(__MSVCRT__)
-#define PRI64d  "I64d"
-#define PRI64u  "I64u"
-#define PRI64x  "I64x"
-#else
 #define PRI64d  "lld"
 #define PRI64u  "llu"
 #define PRI64x  "llx"
-#endif
 #endif
 
 // This is needed because the foreach macro can't get over the comma in pair<t1, t2>
@@ -241,20 +225,12 @@ inline string itostr(int n)
 
 inline int64 atoi64(const char* psz)
 {
-#ifdef _MSC_VER
-    return _atoi64(psz);
-#else
     return strtoll(psz, NULL, 10);
-#endif
 }
 
 inline int64 atoi64(const string& str)
 {
-#ifdef _MSC_VER
-    return _atoi64(str.c_str());
-#else
     return strtoll(str.c_str(), NULL, 10);
-#endif
 }
 
 inline int atoi(const string& str)
