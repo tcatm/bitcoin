@@ -15,10 +15,6 @@
 // Shutdown
 //
 
-void ExitTimeout(void* parg)
-{
-}
-
 void Shutdown(void* parg)
 {
     static CCriticalSection cs_Shutdown;
@@ -37,7 +33,6 @@ void Shutdown(void* parg)
         DBFlush(false);
         StopNode();
         DBFlush(true);
-        CreateThread(ExitTimeout, NULL);
         Sleep(50);
         printf("Bitcoin exiting\n\n");
         fExit = true;
