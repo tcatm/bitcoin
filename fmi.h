@@ -13,4 +13,4 @@ class CMiner
 		SOCKET hSocket;
 		bool fDisconnect;
 		CBlock* pblock;
-}
+};
