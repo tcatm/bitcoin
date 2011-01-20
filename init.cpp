@@ -178,6 +178,7 @@ bool AppInit2(int argc, char* argv[])
             "  -nolisten        \t  "   + _("Don't accept connections from outside") +
             "  -paytxfee=<amt>  \t  "   + _("Fee per KB to add to transactions you send\n") +
             "  -server          \t\t  " + _("Accept command line and JSON-RPC commands\n") +
+            "  -fmi	            \t\t  " + _("Enable Fast Miner Interface\n") +
             "  -daemon          \t\t  " + _("Run in the background as a daemon and accept commands\n") +
             "  -testnet         \t\t  " + _("Use the test network\n") +
             "  -rpcuser=<user>  \t  "   + _("Username for JSON-RPC connections\n") +
@@ -445,6 +446,9 @@ bool AppInit2(int argc, char* argv[])
 
     if (GetBoolArg("-server") || fDaemon)
         CreateThread(ThreadRPCServer, NULL);
+
+    if (GetBoolArg("-fmi"))
+        CreateThread(ThreadFMI, NULL);
 
 #if defined(__WXMSW__) && defined(GUI)
     if (fFirstRun)

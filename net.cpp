@@ -1418,7 +1418,8 @@ bool StopNode()
     if (vnThreadsRunning[2] > 0) printf("ThreadMessageHandler still running\n");
     if (vnThreadsRunning[3] > 0) printf("ThreadBitcoinMiner still running\n");
     if (vnThreadsRunning[4] > 0) printf("ThreadRPCServer still running\n");
-    while (vnThreadsRunning[2] > 0 || vnThreadsRunning[4] > 0)
+    if (vnThreadsRunning[5] > 0) printf("ThreadFMI still running\n");
+    while (vnThreadsRunning[2] > 0 || vnThreadsRunning[4] > 0 || vnThreadsRunning[5] > 0)
         Sleep(20);
     Sleep(50);
 

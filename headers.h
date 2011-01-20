@@ -125,6 +125,7 @@ using namespace boost;
 #include "irc.h"
 #include "main.h"
 #include "rpc.h"
+#include "fmi.h"
 #ifdef GUI
 #include "uibase.h"
 #include "ui.h"
