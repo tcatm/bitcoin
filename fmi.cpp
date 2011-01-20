@@ -70,10 +70,33 @@ int BindSocket(SOCKET *hSocket) {
 void ThreadFMI2(void* parg)
 {
 	SOCKET hSocket;
+	vector<CMiner*> vMiners;
+
     printf("ThreadFMI started\n");
 
-	if (!BindSocket(&hSocket)) {
+	if (!BindSocket(&hSocket))
+	{
 		printf("Error: BindSocket() failed\n");
 		return;
 	}
+
+	loop
+	{
+		if (fShutdown)
+			break;
+
+		/*
+		 * CreateNewBlock
+		 * update extranonce (IncrementExtraNonce)
+		 * store block in miner
+		 */
+
+		/* update from AcceptBlock or SetBestChain */
+
+		/* miner acks every message */
+
+		
+	}
+
+	/* FIXME: cleanup sockets */
 }
