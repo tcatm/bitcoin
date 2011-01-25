@@ -93,8 +93,26 @@ void ThreadFMI2(void* parg)
 
 		/* update from AcceptBlock or SetBestChain */
 
-		/* miner acks every message */
 
+		/* Protocol:
+		 * 
+		 * first byte:
+		 *>	01	sendwork
+		 *		FIXME pblock header
+		 *<	02	ack
+		 *		no payload (maybe later, hashrate)	
+		 *>	03	update ntime
+		 *		4 bytes nTime
+		 *<	04	result
+		 *		4 bytes nNonce
+		 *<	05	getwork
+		 *		no payload (maybe later, hashrate)
+		 *<	06	HELO
+		 *		no payload (maybe later, id string)
+		 *
+		 *	Miner ACKs every message.
+		 *	Timeout after 10s, reset connection (both miner and FMI)
+		 */
 		
 	}
 
