@@ -515,8 +515,7 @@ bool AppInit2(int argc, char* argv[])
 #endif
 
 #ifndef GUI
-    while (1)
-        Sleep(5000);
+    StartCLI();
 #endif
 
     return true;
