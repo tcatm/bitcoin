@@ -16,6 +16,7 @@ tuple<rpcfn_type, Value, Array> ParseJSON(const string& strRequest);
 
 Object JSONRPCError(int code, const string& message);
 string JSONRPCReply(const Value& result, const Value& error, const Value& id);
+string JSONRPCRequest(const string& strMethod, const Array& params, const Value& id);
 
 char *GetLine(bool fInteractive)
 {
@@ -41,7 +42,8 @@ string RPCError(const Object& objError, const Value& id)
     return JSONRPCReply(Value::null, objError, id);
 }
 
-string ExecuteCommand(const string &strRequest) {
+string ExecuteCommand(const string &strRequest)
+{
     Value id = Value::null;
     try
     {
@@ -75,9 +77,12 @@ string ExecuteCommand(const string &strRequest) {
     }
 }
 
-void StartCLI(void) {
+void StartCLI(void)
+{
     bool fInteractive;
+    bool fRawOutput;
     char *pszInput = NULL;
+    string strRequest;
     
     fInteractive = isatty(fileno(stdin));
 
@@ -88,9 +93,45 @@ void StartCLI(void) {
     }
 
     while((pszInput = GetLine(fInteractive)) != NULL) {
-        string foo = ExecuteCommand(string(pszInput));
+        fRawOutput = true;
 
-        printf("%s\n", foo.c_str());
+        if (pszInput[0] != '{') {
+            string strInput(pszInput);
+            istringstream iss(strInput);
+            vector<string> vTokens;
+
+            vTokens.clear();
+
+            copy(istream_iterator<string>(iss),
+                     istream_iterator<string>(),
+                     back_inserter<vector<string> >(vTokens));
+
+            Array params;
+            string strMethod;
+
+            fRawOutput = false;
+
+            params.clear();
+
+            for (int i = 0; i < vTokens.size(); i++) {
+                if (i == 0)
+                    strMethod = vTokens[i];
+                else
+                    params.push_back(vTokens[i]);
+            }
+
+            // if user enters stop, break loop to call Shutdown()
+            if (strMethod == "stop")
+                break;
+
+            strRequest = JSONRPCRequest(strMethod, params, 1);
+        } else {
+            strRequest = string(pszInput);
+        }
+
+        string strResult = ExecuteCommand(strRequest);
+
+        printf("%s\n", strResult.c_str());
 
     }
 
