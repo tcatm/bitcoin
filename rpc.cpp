@@ -1763,6 +1763,49 @@ private:
 };
 #endif
 
+tuple<rpcfn_type, Value, Array> ParseJSON(const string& strRequest) {
+    Value id = Value::null;
+    Value valRequest;
+    if (!read_string(strRequest, valRequest) || valRequest.type() != obj_type)
+        throw JSONRPCError(-32700, "Parse error");
+    const Object& request = valRequest.get_obj();
+
+    // Parse id now so errors from here on will have the id
+    id = find_value(request, "id");
+
+    // Parse method
+    Value valMethod = find_value(request, "method");
+    if (valMethod.type() == null_type)
+        throw JSONRPCError(-32600, "Missing method");
+    if (valMethod.type() != str_type)
+        throw JSONRPCError(-32600, "Method must be a string");
+    string strMethod = valMethod.get_str();
+    if (strMethod != "getwork")
+        printf("ThreadRPCServer method=%s\n", strMethod.c_str());
+
+    // Parse params
+    Value valParams = find_value(request, "params");
+    Array params;
+    if (valParams.type() == array_type)
+        params = valParams.get_array();
+    else if (valParams.type() == null_type)
+        params = Array();
+    else
+        throw JSONRPCError(-32600, "Params must be an array");
+
+    // Find method
+    map<string, rpcfn_type>::iterator mi = mapCallTable.find(strMethod);
+    if (mi == mapCallTable.end())
+        throw JSONRPCError(-32601, "Method not found");
+
+    // Observe safe mode
+    string strWarning = GetWarnings("rpc");
+    if (strWarning != "" && !GetBoolArg("-disablesafemode") && !setAllowInSafeMode.count(strMethod))
+        throw JSONRPCError(-2, string("Safe mode: ") + strWarning);
+
+    return make_tuple((*mi).second, id, params);
+}
+
 void ThreadRPCServer(void* parg)
 {
     IMPLEMENT_RANDOMIZE_STACK(ThreadRPCServer(parg));
@@ -1892,48 +1935,16 @@ void ThreadRPCServer2(void* parg)
         try
         {
             // Parse request
-            Value valRequest;
-            if (!read_string(strRequest, valRequest) || valRequest.type() != obj_type)
-                throw JSONRPCError(-32700, "Parse error");
-            const Object& request = valRequest.get_obj();
-
-            // Parse id now so errors from here on will have the id
-            id = find_value(request, "id");
-
-            // Parse method
-            Value valMethod = find_value(request, "method");
-            if (valMethod.type() == null_type)
-                throw JSONRPCError(-32600, "Missing method");
-            if (valMethod.type() != str_type)
-                throw JSONRPCError(-32600, "Method must be a string");
-            string strMethod = valMethod.get_str();
-            if (strMethod != "getwork")
-                printf("ThreadRPCServer method=%s\n", strMethod.c_str());
-
-            // Parse params
-            Value valParams = find_value(request, "params");
+            rpcfn_type func;
+            Value id;
             Array params;
-            if (valParams.type() == array_type)
-                params = valParams.get_array();
-            else if (valParams.type() == null_type)
-                params = Array();
-            else
-                throw JSONRPCError(-32600, "Params must be an array");
 
-            // Find method
-            map<string, rpcfn_type>::iterator mi = mapCallTable.find(strMethod);
-            if (mi == mapCallTable.end())
-                throw JSONRPCError(-32601, "Method not found");
-
-            // Observe safe mode
-            string strWarning = GetWarnings("rpc");
-            if (strWarning != "" && !GetBoolArg("-disablesafemode") && !setAllowInSafeMode.count(strMethod))
-                throw JSONRPCError(-2, string("Safe mode: ") + strWarning);
+            tie(func, id, params) = ParseJSON(strRequest);
 
             try
             {
                 // Execute
-                Value result = (*(*mi).second)(params, false);
+                Value result = (*func)(params, false);
 
                 // Send reply
                 string strReply = JSONRPCReply(result, Value::null, id);
