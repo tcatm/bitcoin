@@ -82,28 +82,30 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Create application menu bar
     createMenuBar();
 
-    // Create the toolbars
-    createToolBars();
-
     // Create the tray icon (or setup the dock icon)
     createTrayIcon();
 
     QHBoxLayout *hbox = new QHBoxLayout;
     QWidget *central = new QWidget;
     central->setLayout(hbox);
+    hbox->setContentsMargins(0, 0, 0, 0);
 
     QWidget *sidebarWidget = new QWidget();
     QVBoxLayout *sidebar = new QVBoxLayout; 
     sidebarWidget->setLayout(sidebar);
     sidebarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
+    sidebarWidget->setStyleSheet("background-color: #333");
 
     QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
     toolbar->setOrientation(Qt::Vertical);
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    toolbar->setStyleSheet("QToolButton {color: #fafafa; font-weight: bold; border: none} \
+QToolButton:checked {background: #ddd; color: #333}");
 
     createSidebarButtons(toolbar);
     
     sidebar->addWidget(toolbar);
+    sidebar->setContentsMargins(0, 0, 0, 0);
 
 
     // Create tabs
@@ -308,13 +310,6 @@ void BitcoinGUI::createMenuBar()
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);
-}
-
-void BitcoinGUI::createToolBars()
-{
-    QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
-    toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    toolbar2->addAction(exportAction);
 }
 
 QToolButton *BitcoinGUI::createSidebarButton(QAction *action) {

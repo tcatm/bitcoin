@@ -98,8 +98,6 @@ private:
     void createActions();
     /** Create the menu bar and submenus. */
     void createMenuBar();
-    /** Create the toolbars */
-    void createToolBars();
     /** Create system tray (notification) icon */
     void createTrayIcon();
 
