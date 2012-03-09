@@ -10,9 +10,9 @@ QToolBar#toolbar {
 }
 
 QToolButton {
-  margin: 0;
+  margin: 1em 0 0 0;
   border: none;
-  padding: 0 3em 0 5em;
+  padding: 0 3em 0 2em;
   color: #fafafa;
   font-weight: bold;
 }
