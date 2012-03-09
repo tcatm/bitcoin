@@ -2,6 +2,7 @@
 #define BITCOINGUI_H
 
 #include <QMainWindow>
+#include <QToolButton>
 #include <QSystemTrayIcon>
 
 class TransactionTableModel;
@@ -17,7 +18,6 @@ class Notificator;
 QT_BEGIN_NAMESPACE
 class QLabel;
 class QLineEdit;
-class QTableView;
 class QAbstractItemModel;
 class QModelIndex;
 class QProgressBar;
@@ -102,6 +102,9 @@ private:
     void createToolBars();
     /** Create system tray (notification) icon */
     void createTrayIcon();
+
+    void createSidebarButtons(QToolBar *toolbar);
+    QToolButton *createSidebarButton(QAction *action);
 
 public slots:
     /** Set number of connections shown in the UI */

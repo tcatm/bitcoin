@@ -40,6 +40,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QToolButton>
 #include <QLocale>
 #include <QMessageBox>
 #include <QProgressBar>
@@ -87,6 +88,24 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Create the tray icon (or setup the dock icon)
     createTrayIcon();
 
+    QHBoxLayout *hbox = new QHBoxLayout;
+    QWidget *central = new QWidget;
+    central->setLayout(hbox);
+
+    QWidget *sidebarWidget = new QWidget();
+    QVBoxLayout *sidebar = new QVBoxLayout; 
+    sidebarWidget->setLayout(sidebar);
+    sidebarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
+
+    QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
+    toolbar->setOrientation(Qt::Vertical);
+    toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+    createSidebarButtons(toolbar);
+    
+    sidebar->addWidget(toolbar);
+
+
     // Create tabs
     overviewPage = new OverviewPage();
 
@@ -97,7 +116,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     transactionsPage->setLayout(vbox);
 
     addressBookPage = new AddressBookPage(AddressBookPage::ForEditing, AddressBookPage::SendingTab);
-
     receiveCoinsPage = new AddressBookPage(AddressBookPage::ForEditing, AddressBookPage::ReceivingTab);
 
     sendCoinsPage = new SendCoinsDialog(this);
@@ -113,7 +131,11 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 #ifdef FIRST_CLASS_MESSAGING
     centralWidget->addWidget(messagePage);
 #endif
-    setCentralWidget(centralWidget);
+
+    hbox->addWidget(sidebarWidget);
+    hbox->addWidget(centralWidget);
+
+    setCentralWidget(central);
 
     // Create status bar
     statusBar();
@@ -290,20 +312,29 @@ void BitcoinGUI::createMenuBar()
 
 void BitcoinGUI::createToolBars()
 {
-    QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
-    toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    toolbar->addAction(overviewAction);
-    toolbar->addAction(sendCoinsAction);
-    toolbar->addAction(receiveCoinsAction);
-    toolbar->addAction(historyAction);
-    toolbar->addAction(addressBookAction);
-#ifdef FIRST_CLASS_MESSAGING
-    toolbar->addAction(messageAction);
-#endif
-
     QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
     toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar2->addAction(exportAction);
+}
+
+QToolButton *BitcoinGUI::createSidebarButton(QAction *action) {
+    QToolButton *btn = new QToolButton;
+    btn->setDefaultAction(action);
+    btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+    return btn;
+}
+
+void BitcoinGUI::createSidebarButtons(QToolBar *toolbar) {
+    toolbar->addWidget(createSidebarButton(overviewAction));
+    toolbar->addWidget(createSidebarButton(sendCoinsAction));
+    toolbar->addWidget(createSidebarButton(receiveCoinsAction));
+    toolbar->addWidget(createSidebarButton(historyAction));
+    toolbar->addWidget(createSidebarButton(addressBookAction));
+#ifdef FIRST_CLASS_MESSAGING
+    toolbar->addWidget(createSidebarButton(messageAction));
+#endif
 }
 
 void BitcoinGUI::setClientModel(ClientModel *clientModel)
