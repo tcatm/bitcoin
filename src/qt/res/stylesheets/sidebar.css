@@ -1,0 +1,27 @@
+#sidebar {
+  margin: 0;
+  padding: 0;
+  background: #333 url(:images/dark-leather);
+}
+
+QToolBar#toolbar {
+  padding: 0;
+  border: 0;
+}
+
+QToolButton {
+  margin: 0;
+  border: none;
+  padding: 0 3em 0 5em;
+  color: #fafafa;
+  font-weight: bold;
+}
+
+QToolButton:checked {
+  background: #ddd;
+  color: #333
+}
+
+QToolButton:hover {
+  color: red;
+}

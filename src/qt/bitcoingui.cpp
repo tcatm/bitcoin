@@ -28,6 +28,7 @@
 #include "macdockiconhandler.h"
 #endif
 
+#include <QtDebug>
 #include <QApplication>
 #include <QMainWindow>
 #include <QMenuBar>
@@ -47,6 +48,7 @@
 #include <QStackedWidget>
 #include <QDateTime>
 #include <QMovie>
+#include <QFile>
 #include <QFileDialog>
 #include <QDesktopServices>
 
@@ -94,19 +96,21 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     QVBoxLayout *sidebar = new QVBoxLayout; 
     sidebarWidget->setLayout(sidebar);
     sidebarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
-    sidebarWidget->setStyleSheet("background-color: #333");
+    sidebarWidget->setObjectName("sidebar");
+
+    QFile sidebarQSS(":/stylesheets/sidebar");
+    sidebarQSS.open(QIODevice::ReadOnly | QIODevice::Text);
+    sidebarWidget->setStyleSheet(sidebarQSS.readAll());
 
     QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
     toolbar->setOrientation(Qt::Vertical);
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    toolbar->setStyleSheet("QToolButton {color: #fafafa; font-weight: bold; border: none} \
-QToolButton:checked {background: #ddd; color: #333}");
+    toolbar->setObjectName("toolbar");
 
     createSidebarButtons(toolbar);
     
     sidebar->addWidget(toolbar);
     sidebar->setContentsMargins(0, 0, 0, 0);
-
 
     // Create tabs
     overviewPage = new OverviewPage();
