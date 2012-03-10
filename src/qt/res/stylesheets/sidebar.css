@@ -1,4 +1,4 @@
-#sidebar {
+QWidget {
   margin: 0;
   padding: 0;
   background: #333 url(:images/dark-leather);
@@ -28,4 +28,13 @@ QToolButton:checked {
 
 QToolButton:hover {
   color: red;
+}
+
+QLabel {
+  margin: 0 1em;
+}
+
+QLabel.label {
+  margin-top: 1em;
+  font-weight: bold;
 }

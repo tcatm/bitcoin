@@ -6,20 +6,23 @@
 #include <QToolButton>
 #include <QLabel>
 #include <QFile>
+#include <QPainter>
+#include <QStyle>
+#include <QStyleOption>
 
 Sidebar::Sidebar(BitcoinGUI *gui) :
   QWidget(gui)
 {
-  QVBoxLayout *sidebar = new QVBoxLayout;
-  sidebar->setContentsMargins(0, 0, 0, 0);
-
-  this->setLayout(sidebar);
   this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
-  this->setObjectName("sidebar");
+  this->setObjectName("Sidebar");
 
   QFile sidebarQSS(":/stylesheets/sidebar");
   sidebarQSS.open(QIODevice::ReadOnly | QIODevice::Text);
   this->setStyleSheet(sidebarQSS.readAll());
+
+  QVBoxLayout *sidebar = new QVBoxLayout;
+  sidebar->setContentsMargins(0, 0, 0, 0);
+  this->setLayout(sidebar);
 
   QToolBar *toolbar = new QToolBar;
   toolbar->setOrientation(Qt::Vertical);
@@ -32,13 +35,15 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   QLabel *balanceLabel = new QLabel(this);
   balanceLabel->setText("Balance...");
   balanceLabel->setAlignment(Qt::AlignLeft);
-  balanceLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+  balanceLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Minimum);
+  balanceLabel->setProperty("class", "label");
   sidebar->addWidget(balanceLabel);
 
   QLabel *balanceValue = new QLabel(this);
   balanceValue->setText("123.123 BTC");
   balanceValue->setAlignment(Qt::AlignRight);
-  balanceValue->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+  balanceValue->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Minimum);
+  balanceValue->setProperty("class", "value");
   sidebar->addWidget(balanceValue);
 
   sidebar->addWidget(toolbar);
@@ -47,6 +52,13 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
 Sidebar::~Sidebar()
 {
 }
+
+void Sidebar::paintEvent(QPaintEvent *pe) {
+  QStyleOption o;
+  o.initFrom(this);
+  QPainter p(this);
+  style()->drawPrimitive(QStyle::PE_Widget, &o, &p, this);
+};
 
 void Sidebar::setBalance(qint64 balance, qint64 unconfirmedBalance)
 {

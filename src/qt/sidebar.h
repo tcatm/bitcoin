@@ -27,6 +27,7 @@ public:
     explicit Sidebar(BitcoinGUI *gui);
     ~Sidebar();
 
+    void paintEvent(QPaintEvent *pe);
     void setModel(WalletModel *model);
     QToolButton *createSidebarButton(QAction *action);
     void createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui);
