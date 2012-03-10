@@ -1,40 +1,39 @@
-QWidget {
-  margin: 0;
-  padding: 0;
-  background: #333 url(:images/darknoise);
-}
-
-QLabel {
-  color: #fafafa;
-}
-
 QToolBar#toolbar {
-  padding: 0;
-  border: 0;
+  margin: 0;
+  icon-size: 18px 18px;
 }
 
 QToolButton {
-  margin: 1em 0 0 0;
+  margin: 0 0 0 0;
   border: none;
-  padding: 0 3em 0 2em;
-  color: #fafafa;
-  font-weight: bold;
-}
-
-QToolButton:checked {
-  background: #ddd;
-  color: #333
+  padding: 0 1em 0 1em;
+  color: black;
+  font-size: 9pt;
 }
 
 QToolButton:hover {
-  color: red;
+  color: #1c4081;
 }
 
-QLabel {
-  margin: 0 1em;
+QToolButton:checked {
+  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                              stop:0 #BBC4D5, stop:1 #9DAAC4);
+  color: white;
 }
 
-QLabel.label {
-  margin-top: 1em;
+#sidebar, #toolbar, QToolButton {
+  border-right: 1px solid #ACABAB;
+}
+
+#sidebar {
+  background: #DFE4EB;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#sidebar QLabel {
+  text: sunken;
+  color: #707e8c;
+  padding: 0.5em 0.5em 0;
   font-weight: bold;
+  font-size: 7.5pt;
 }

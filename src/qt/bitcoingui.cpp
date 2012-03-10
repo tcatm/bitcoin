@@ -95,7 +95,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     // Create sidebar
     sidebar = new Sidebar(this);
-    sidebar->setObjectName("sidebar");
 
     // Create tabs
     overviewPage = new OverviewPage();
@@ -122,6 +121,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 #ifdef FIRST_CLASS_MESSAGING
     centralWidget->addWidget(messagePage);
 #endif
+
+    centralWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     hbox->addWidget(sidebar);
     hbox->addWidget(centralWidget);

@@ -33,15 +33,11 @@ public:
     void createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui);
 
 public slots:
-    void setBalance(qint64 balance, qint64 unconfirmedBalance);
 
 private:
     WalletModel *model;
-    qint64 currentBalance;
-    qint64 currentUnconfirmedBalance;
 
 private slots:
-    void displayUnitChanged();
 };
 
 #endif // SIDEBAR_H
