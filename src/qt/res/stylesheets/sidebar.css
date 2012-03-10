@@ -4,6 +4,10 @@
   background: #333 url(:images/dark-leather);
 }
 
+QLabel {
+  color: #fafafa;
+}
+
 QToolBar#toolbar {
   padding: 0;
   border: 0;

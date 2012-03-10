@@ -10,6 +10,7 @@ class ClientModel;
 class WalletModel;
 class TransactionView;
 class OverviewPage;
+class Sidebar;
 class AddressBookPage;
 class SendCoinsDialog;
 class MessagePage;
@@ -45,33 +46,7 @@ public:
         functionality.
     */
     void setWalletModel(WalletModel *walletModel);
-    
-protected:
-    void changeEvent(QEvent *e);
-    void closeEvent(QCloseEvent *event);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
 
-private:
-    ClientModel *clientModel;
-    WalletModel *walletModel;
-
-    QStackedWidget *centralWidget;
-
-    OverviewPage *overviewPage;
-    QWidget *transactionsPage;
-    AddressBookPage *addressBookPage;
-    AddressBookPage *receiveCoinsPage;
-    SendCoinsDialog *sendCoinsPage;
-    MessagePage *messagePage;
-
-    QLabel *labelEncryptionIcon;
-    QLabel *labelConnectionsIcon;
-    QLabel *labelBlocksIcon;
-    QLabel *progressBarLabel;
-    QProgressBar *progressBar;
-
-    QMenuBar *appMenuBar;
     QAction *overviewAction;
     QAction *historyAction;
     QAction *quitAction;
@@ -87,6 +62,34 @@ private:
     QAction *backupWalletAction;
     QAction *changePassphraseAction;
     QAction *aboutQtAction;
+    
+protected:
+    void changeEvent(QEvent *e);
+    void closeEvent(QCloseEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
+private:
+    ClientModel *clientModel;
+    WalletModel *walletModel;
+
+    QStackedWidget *centralWidget;
+
+    OverviewPage *overviewPage;
+    Sidebar *sidebar;
+    QWidget *transactionsPage;
+    AddressBookPage *addressBookPage;
+    AddressBookPage *receiveCoinsPage;
+    SendCoinsDialog *sendCoinsPage;
+    MessagePage *messagePage;
+
+    QLabel *labelEncryptionIcon;
+    QLabel *labelConnectionsIcon;
+    QLabel *labelBlocksIcon;
+    QLabel *progressBarLabel;
+    QProgressBar *progressBar;
+
+    QMenuBar *appMenuBar;
 
     QSystemTrayIcon *trayIcon;
     Notificator *notificator;
@@ -100,9 +103,6 @@ private:
     void createMenuBar();
     /** Create system tray (notification) icon */
     void createTrayIcon();
-
-    void createSidebarButtons(QToolBar *toolbar);
-    QToolButton *createSidebarButton(QAction *action);
 
 public slots:
     /** Set number of connections shown in the UI */

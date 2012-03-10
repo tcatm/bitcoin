@@ -23,6 +23,7 @@
 #include "guiconstants.h"
 #include "askpassphrasedialog.h"
 #include "notificator.h"
+#include "sidebar.h"
 
 #ifdef Q_WS_MAC
 #include "macdockiconhandler.h"
@@ -92,25 +93,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     central->setLayout(hbox);
     hbox->setContentsMargins(0, 0, 0, 0);
 
-    QWidget *sidebarWidget = new QWidget();
-    QVBoxLayout *sidebar = new QVBoxLayout; 
-    sidebarWidget->setLayout(sidebar);
-    sidebarWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
-    sidebarWidget->setObjectName("sidebar");
-
-    QFile sidebarQSS(":/stylesheets/sidebar");
-    sidebarQSS.open(QIODevice::ReadOnly | QIODevice::Text);
-    sidebarWidget->setStyleSheet(sidebarQSS.readAll());
-
-    QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
-    toolbar->setOrientation(Qt::Vertical);
-    toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    toolbar->setObjectName("toolbar");
-
-    createSidebarButtons(toolbar);
-    
-    sidebar->addWidget(toolbar);
-    sidebar->setContentsMargins(0, 0, 0, 0);
+    // Create sidebar
+    sidebar = new Sidebar(this);
 
     // Create tabs
     overviewPage = new OverviewPage();
@@ -138,7 +122,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->addWidget(messagePage);
 #endif
 
-    hbox->addWidget(sidebarWidget);
+    hbox->addWidget(sidebar);
     hbox->addWidget(centralWidget);
 
     setCentralWidget(central);
@@ -314,26 +298,6 @@ void BitcoinGUI::createMenuBar()
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);
-}
-
-QToolButton *BitcoinGUI::createSidebarButton(QAction *action) {
-    QToolButton *btn = new QToolButton;
-    btn->setDefaultAction(action);
-    btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-    return btn;
-}
-
-void BitcoinGUI::createSidebarButtons(QToolBar *toolbar) {
-    toolbar->addWidget(createSidebarButton(overviewAction));
-    toolbar->addWidget(createSidebarButton(sendCoinsAction));
-    toolbar->addWidget(createSidebarButton(receiveCoinsAction));
-    toolbar->addWidget(createSidebarButton(historyAction));
-    toolbar->addWidget(createSidebarButton(addressBookAction));
-#ifdef FIRST_CLASS_MESSAGING
-    toolbar->addWidget(createSidebarButton(messageAction));
-#endif
 }
 
 void BitcoinGUI::setClientModel(ClientModel *clientModel)
