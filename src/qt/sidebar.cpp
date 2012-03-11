@@ -32,7 +32,7 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
 
   createSidebarButtons(toolbar, gui);
 
-  QLabel *toolbarLabel = new QLabel(tr("MY BITCOIN"));
+  QLabel *toolbarLabel = new QLabel(tr("MY WALLET"));
   toolbarLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
   sidebar->addWidget(toolbarLabel);

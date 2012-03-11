@@ -1,12 +1,12 @@
 QToolBar#toolbar {
   margin: 0;
-  icon-size: 18px 18px;
+  icon-size: 16px 16px;
 }
 
 QToolButton {
-  margin: 0 0 0 0;
+  margin: 0 1px 0 0;
   border: none;
-  padding: 0 1em 0 1em;
+  padding: 2px 1em;
   color: black;
   font-size: 9pt;
 }
@@ -21,7 +21,7 @@ QToolButton:checked {
   color: white;
 }
 
-#sidebar, #toolbar, QToolButton {
+#sidebar {
   border-right: 1px solid #ACABAB;
 }
 
@@ -31,7 +31,6 @@ QToolButton:checked {
 }
 
 #sidebar QLabel {
-  text: sunken;
   color: #707e8c;
   padding: 0.5em 0.5em 0;
   font-weight: bold;
