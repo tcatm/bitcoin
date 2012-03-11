@@ -14,6 +14,7 @@ class WalletModel;
 class QToolBar;
 class QToolButton;
 class QLabel;
+class QHBoxLayout;
 
 /* Sidebar widget 
  *
@@ -33,6 +34,8 @@ public:
     void setModel(WalletModel *model);
     QToolButton *createSidebarButton(QAction *action);
     void createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui);
+
+    QHBoxLayout *iconHolder;
 
 public slots:
     void setBalance(qint64 balance, qint64 unconfirmedBalance);

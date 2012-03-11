@@ -97,6 +97,8 @@ private:
 
     QMovie *syncIconMovie;
 
+    QLabel *labelWarnings;
+
     /** Create the main UI actions. */
     void createActions();
     /** Create the menu bar and submenus. */

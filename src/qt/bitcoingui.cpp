@@ -131,11 +131,12 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     QWidget *mainBox = new QWidget;
     mainBox->setLayout(mainVBox);
 
-    QLabel *fooLabel = new QLabel("Warning: This is a warning. You should upgrade to the latest version.");
-    fooLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    fooLabel->setStyleSheet("background: yellow; padding: 1em");
+    labelWarnings = new QLabel;
+    labelWarnings->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    labelWarnings->setStyleSheet("background: yellow; padding: 1em");
+    labelWarnings->setVisible(false);
 
-    mainVBox->addWidget(fooLabel);
+    mainVBox->addWidget(labelWarnings);
     mainVBox->addWidget(centralWidget);
     mainVBox->setContentsMargins(0, 0, 0, 0);
 
@@ -146,24 +147,13 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Create status bar
     statusBar();
 
-    // Status bar notification icons
-    QFrame *frameBlocks = new QFrame();
-    frameBlocks->setContentsMargins(0,0,0,0);
-    frameBlocks->setMinimumWidth(56);
-    frameBlocks->setMaximumWidth(56);
-    QHBoxLayout *frameBlocksLayout = new QHBoxLayout(frameBlocks);
-    frameBlocksLayout->setContentsMargins(3,0,3,0);
-    frameBlocksLayout->setSpacing(3);
+    // notification icons
     labelEncryptionIcon = new QLabel();
     labelConnectionsIcon = new QLabel();
     labelBlocksIcon = new QLabel();
-    frameBlocksLayout->addStretch();
-    frameBlocksLayout->addWidget(labelEncryptionIcon);
-    frameBlocksLayout->addStretch();
-    frameBlocksLayout->addWidget(labelConnectionsIcon);
-    frameBlocksLayout->addStretch();
-    frameBlocksLayout->addWidget(labelBlocksIcon);
-    frameBlocksLayout->addStretch();
+    sidebar->iconHolder->addWidget(labelEncryptionIcon);
+    sidebar->iconHolder->addWidget(labelConnectionsIcon);
+    sidebar->iconHolder->addWidget(labelBlocksIcon);
 
     // Progress bar for blocks download
     progressBarLabel = new QLabel(tr("Synchronizing with network..."));
@@ -174,7 +164,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     statusBar()->addWidget(progressBarLabel);
     statusBar()->addWidget(progressBar);
-    statusBar()->addPermanentWidget(frameBlocks);
 
     syncIconMovie = new QMovie(":/movies/update_spinner", "mng", this);
 
@@ -461,33 +450,26 @@ void BitcoinGUI::setNumBlocks(int count)
     int total = clientModel->getNumBlocksOfPeers();
     QString tooltip;
 
+    if (clientModel->getStatusBarWarnings() == "")
+        labelWarnings->setVisible(false);
+    else
+    {
+        labelWarnings->setText(clientModel->getStatusBarWarnings());
+        labelWarnings->setVisible(true);
+    }
+
     if(count < total)
     {
-        if (clientModel->getStatusBarWarnings() == "")
-        {
-            progressBarLabel->setVisible(true);
-            progressBarLabel->setText(tr("Synchronizing with network..."));
-            progressBar->setVisible(true);
-            progressBar->setMaximum(total);
-            progressBar->setValue(count);
-        }
-        else
-        {
-            progressBarLabel->setText(clientModel->getStatusBarWarnings());
-            progressBarLabel->setVisible(true);
-            progressBar->setVisible(false);
-        }
+        progressBarLabel->setVisible(true);
+        progressBarLabel->setText(tr("Synchronizing with network..."));
+        progressBar->setVisible(true);
+        progressBar->setMaximum(total);
+        progressBar->setValue(count);
+
         tooltip = tr("Downloaded %1 of %2 blocks of transaction history.").arg(count).arg(total);
     }
     else
     {
-        if (clientModel->getStatusBarWarnings() == "")
-            progressBarLabel->setVisible(false);
-        else
-        {
-            progressBarLabel->setText(clientModel->getStatusBarWarnings());
-            progressBarLabel->setVisible(true);
-        }
         progressBar->setVisible(false);
         tooltip = tr("Downloaded %1 blocks of transaction history.").arg(count);
     }

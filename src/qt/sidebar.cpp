@@ -48,6 +48,17 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   sidebar->addWidget(balanceLabel);
   sidebar->addWidget(toolbarLabel);
   sidebar->addWidget(toolbar);
+
+  QWidget *iconBox = new QWidget;
+
+  iconHolder = new QHBoxLayout;
+  iconHolder->setSpacing(0);
+  iconHolder->setContentsMargins(0, 4, 0, 4);
+
+  iconBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
+  iconBox->setLayout(iconHolder);
+
+  sidebar->addWidget(iconBox);
 }
 
 Sidebar::~Sidebar()
