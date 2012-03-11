@@ -467,6 +467,7 @@ void BitcoinGUI::setNumBlocks(int count)
     }
     else
     {
+        progressBarLabel->setVisible(false);
         progressBar->setVisible(false);
         tooltip = tr("Downloaded %1 blocks of transaction history.").arg(count);
     }
