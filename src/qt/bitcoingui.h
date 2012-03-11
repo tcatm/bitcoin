@@ -46,22 +46,6 @@ public:
         functionality.
     */
     void setWalletModel(WalletModel *walletModel);
-
-    QAction *overviewAction;
-    QAction *historyAction;
-    QAction *quitAction;
-    QAction *sendCoinsAction;
-    QAction *addressBookAction;
-    QAction *messageAction;
-    QAction *aboutAction;
-    QAction *receiveCoinsAction;
-    QAction *optionsAction;
-    QAction *openBitcoinAction;
-    QAction *exportAction;
-    QAction *encryptWalletAction;
-    QAction *backupWalletAction;
-    QAction *changePassphraseAction;
-    QAction *aboutQtAction;
     
 protected:
     void changeEvent(QEvent *e);
@@ -83,6 +67,22 @@ private:
     SendCoinsDialog *sendCoinsPage;
     MessagePage *messagePage;
 
+    QAction *overviewAction;
+    QAction *historyAction;
+    QAction *quitAction;
+    QAction *sendCoinsAction;
+    QAction *addressBookAction;
+    QAction *messageAction;
+    QAction *aboutAction;
+    QAction *receiveCoinsAction;
+    QAction *optionsAction;
+    QAction *openBitcoinAction;
+    QAction *exportAction;
+    QAction *encryptWalletAction;
+    QAction *backupWalletAction;
+    QAction *changePassphraseAction;
+    QAction *aboutQtAction;
+
     QLabel *labelEncryptionIcon;
     QLabel *labelConnectionsIcon;
     QLabel *labelBlocksIcon;
@@ -99,6 +99,8 @@ private:
 
     QLabel *labelWarnings;
 
+    /** Add buttons to sidebar */
+    void addSidebarButtons();
     /** Create the main UI actions. */
     void createActions();
     /** Create the menu bar and submenus. */

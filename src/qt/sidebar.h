@@ -32,9 +32,9 @@ public:
 
     void paintEvent(QPaintEvent *pe);
     void setModel(WalletModel *model);
-    QToolButton *createSidebarButton(QAction *action);
-    void createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui);
+    void createSidebarButton(QAction *action);
 
+    QToolBar *toolbar;
     QHBoxLayout *iconHolder;
     QLabel *labelEncryptionIcon;
 

@@ -127,6 +127,9 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     hbox->addWidget(sidebar);
 
+    // Add buttons to Sidebar
+    addSidebarButtons();
+
     QVBoxLayout *mainVBox = new QVBoxLayout;
     QWidget *mainBox = new QWidget;
     mainBox->setLayout(mainVBox);
@@ -177,6 +180,18 @@ BitcoinGUI::~BitcoinGUI()
         trayIcon->hide();
 #ifdef Q_WS_MAC
     delete appMenuBar;
+#endif
+}
+
+void BitcoinGUI::addSidebarButtons()
+{
+  sidebar->createSidebarButton(overviewAction);
+  sidebar->createSidebarButton(sendCoinsAction);
+  sidebar->createSidebarButton(receiveCoinsAction);
+  sidebar->createSidebarButton(historyAction);
+  sidebar->createSidebarButton(addressBookAction);
+#ifdef FIRST_CLASS_MESSAGING
+  sidebar->createSidebarButton(messageAction);
 #endif
 }
 

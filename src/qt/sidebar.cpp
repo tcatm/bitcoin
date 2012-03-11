@@ -25,13 +25,11 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   sidebar->setContentsMargins(0, 0, 0, 0);
   this->setLayout(sidebar);
 
-  QToolBar *toolbar = new QToolBar;
+  toolbar = new QToolBar;
   toolbar->setOrientation(Qt::Vertical);
   toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
   toolbar->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
   toolbar->setObjectName("toolbar");
-
-  createSidebarButtons(toolbar, gui);
 
   QWidget *boxWalletLabel = new QWidget;
   boxWalletLabel->setLayout(new QHBoxLayout);
@@ -85,25 +83,13 @@ void Sidebar::paintEvent(QPaintEvent *pe) {
   style()->drawPrimitive(QStyle::PE_Widget, &o, &p, this);
 };
 
-QToolButton *Sidebar::createSidebarButton(QAction *action) {
+void Sidebar::createSidebarButton(QAction *action) {
     QToolButton *btn = new QToolButton;
     btn->setDefaultAction(action);
     btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-    return btn;
-}
-
-void Sidebar::createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui)
-{
-  toolbar->addWidget(createSidebarButton(gui->overviewAction));
-  toolbar->addWidget(createSidebarButton(gui->sendCoinsAction));
-  toolbar->addWidget(createSidebarButton(gui->receiveCoinsAction));
-  toolbar->addWidget(createSidebarButton(gui->historyAction));
-  toolbar->addWidget(createSidebarButton(gui->addressBookAction));
-#ifdef FIRST_CLASS_MESSAGING
-  toolbar->addWidget(createSidebarButton(gui->messageAction));
-#endif
+    toolbar->addWidget(btn);
 }
 
 void Sidebar::setBalance(qint64 balance, qint64 unconfirmedBalance)
