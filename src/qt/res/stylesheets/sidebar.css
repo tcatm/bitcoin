@@ -45,3 +45,16 @@ QToolButton:checked {
   padding: 0 0.5em;
   font-weight: normal;
 }
+
+#sidebar QProgressBar {
+  margin: 0 1em;
+  background: transparent;
+  padding: 0;
+  border: 1px solid #707e8c;
+  text-align: center;
+  color: transparent;
+}
+
+#sidebar QProgressBar::chunk:horizontal {
+  background: #707e8c;
+}

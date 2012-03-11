@@ -21,14 +21,14 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   sidebarQSS.open(QIODevice::ReadOnly | QIODevice::Text);
   this->setStyleSheet(sidebarQSS.readAll());
 
-  QVBoxLayout *sidebar = new QVBoxLayout;
+  sidebar = new QVBoxLayout;
   sidebar->setContentsMargins(0, 0, 0, 0);
   this->setLayout(sidebar);
 
   toolbar = new QToolBar;
   toolbar->setOrientation(Qt::Vertical);
   toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  toolbar->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
+  toolbar->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
   toolbar->setObjectName("toolbar");
 
   QWidget *boxWalletLabel = new QWidget;
@@ -121,4 +121,9 @@ void Sidebar::displayUnitChanged()
         return;
     if(currentBalance != -1)
         setBalance(currentBalance, currentUnconfirmedBalance);
+}
+
+void Sidebar::addStretch()
+{  
+  sidebar->addStretch();
 }

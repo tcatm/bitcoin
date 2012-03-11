@@ -160,12 +160,16 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Progress bar for blocks download
     progressBarLabel = new QLabel(tr("Synchronizing with network..."));
     progressBarLabel->setVisible(false);
+    progressBarLabel->setProperty("class", "section");
     progressBar = new QProgressBar();
     progressBar->setToolTip(tr("Block chain synchronization in progress"));
     progressBar->setVisible(false);
+    progressBar->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 
-    mainVBox->addWidget(progressBarLabel);
-    mainVBox->addWidget(progressBar);
+    sidebar->layout()->addWidget(progressBarLabel);
+    sidebar->layout()->addWidget(progressBar);
+
+    sidebar->addStretch();
 
     syncIconMovie = new QMovie(":/movies/update_spinner", "mng", this);
 
@@ -475,7 +479,7 @@ void BitcoinGUI::setNumBlocks(int count)
     if(count < total)
     {
         progressBarLabel->setVisible(true);
-        progressBarLabel->setText(tr("Synchronizing with network..."));
+        progressBarLabel->setText(tr("SYNCHRONIZING"));
         progressBar->setVisible(true);
         progressBar->setMaximum(total);
         progressBar->setValue(count);

@@ -15,6 +15,7 @@ class QToolBar;
 class QToolButton;
 class QLabel;
 class QHBoxLayout;
+class QVBoxLayout;
 
 /* Sidebar widget 
  *
@@ -33,6 +34,7 @@ public:
     void paintEvent(QPaintEvent *pe);
     void setModel(WalletModel *model);
     void createSidebarButton(QAction *action);
+    void addStretch();
 
     QToolBar *toolbar;
     QHBoxLayout *iconHolder;
@@ -42,6 +44,7 @@ public slots:
     void setBalance(qint64 balance, qint64 unconfirmedBalance);
 
 private:
+    QVBoxLayout *sidebar;
     QLabel *balanceLabel;
     WalletModel *model;
     qint64 currentBalance;
