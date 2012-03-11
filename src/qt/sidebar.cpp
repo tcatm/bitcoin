@@ -1,4 +1,5 @@
 #include "sidebar.h"
+#include "walletmodel.h"
 #include "bitcoingui.h"
 
 #include <QVBoxLayout>
@@ -32,9 +33,19 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
 
   createSidebarButtons(toolbar, gui);
 
-  QLabel *toolbarLabel = new QLabel(tr("MY WALLET"));
+  QLabel *walletLabel = new QLabel(tr("MY WALLET"));
+  walletLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+  QLabel *toolbarLabel = new QLabel(tr("VIEWS"));
   toolbarLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
+  balanceLabel = new QLabel(tr("12,345.12345678 BTC"));
+  balanceLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+  balanceLabel->setAlignment(Qt::AlignRight);
+  balanceLabel->setObjectName("balance");
+
+  sidebar->addWidget(walletLabel);
+  sidebar->addWidget(balanceLabel);
   sidebar->addWidget(toolbarLabel);
   sidebar->addWidget(toolbar);
 }
@@ -69,4 +80,34 @@ void Sidebar::createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui)
 #ifdef FIRST_CLASS_MESSAGING
   toolbar->addWidget(createSidebarButton(gui->messageAction));
 #endif
+}
+
+void Sidebar::setBalance(qint64 balance, qint64 unconfirmedBalance)
+{
+    int unit = model->getOptionsModel()->getDisplayUnit();
+    currentBalance = balance;
+    currentUnconfirmedBalance = unconfirmedBalance;
+    balanceLabel->setText(BitcoinUnits::formatWithUnit(unit, balance));
+    //    labelUnconfirmed->setText(BitcoinUnits::formatWithUnit(unit, unconfirmedBalance));
+}
+
+void Sidebar::setModel(WalletModel *model)
+{
+    this->model = model;
+    if(model)
+    {
+        // Keep up to date with wallet
+        setBalance(model->getBalance(), model->getUnconfirmedBalance());
+        connect(model, SIGNAL(balanceChanged(qint64, qint64)), this, SLOT(setBalance(qint64, qint64)));
+
+        connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(displayUnitChanged()));
+    }
+}
+
+void Sidebar::displayUnitChanged()
+{
+    if(!model || !model->getOptionsModel())
+        return;
+    if(currentBalance != -1)
+        setBalance(currentBalance, currentUnconfirmedBalance);
 }

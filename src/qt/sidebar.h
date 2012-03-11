@@ -1,6 +1,8 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
 
+#include "optionsmodel.h"
+#include "bitcoinunits.h"
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -9,9 +11,9 @@ QT_END_NAMESPACE
 
 class BitcoinGUI;
 class WalletModel;
-class TxViewDelegate;
 class QToolBar;
 class QToolButton;
+class QLabel;
 
 /* Sidebar widget 
  *
@@ -33,11 +35,16 @@ public:
     void createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui);
 
 public slots:
+    void setBalance(qint64 balance, qint64 unconfirmedBalance);
 
 private:
+    QLabel *balanceLabel;
     WalletModel *model;
+    qint64 currentBalance;
+    qint64 currentUnconfirmedBalance;
 
 private slots:
+    void displayUnitChanged();
 };
 
 #endif // SIDEBAR_H

@@ -346,6 +346,8 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
         // Put transaction list in tabs
         transactionView->setModel(walletModel);
 
+	sidebar->setModel(walletModel);
+
         overviewPage->setModel(walletModel);
         addressBookPage->setModel(walletModel->getAddressTableModel());
         receiveCoinsPage->setModel(walletModel->getAddressTableModel());
