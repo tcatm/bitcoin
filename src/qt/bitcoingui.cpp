@@ -92,6 +92,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     QWidget *central = new QWidget;
     central->setLayout(hbox);
     hbox->setContentsMargins(0, 0, 0, 0);
+    hbox->setSpacing(0);
 
     // Create sidebar
     sidebar = new Sidebar(this);
@@ -125,7 +126,20 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     hbox->addWidget(sidebar);
-    hbox->addWidget(centralWidget);
+
+    QVBoxLayout *mainVBox = new QVBoxLayout;
+    QWidget *mainBox = new QWidget;
+    mainBox->setLayout(mainVBox);
+
+    QLabel *fooLabel = new QLabel("Warning: This is a warning. You should upgrade to the latest version.");
+    fooLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    fooLabel->setStyleSheet("background: yellow; padding: 1em");
+
+    mainVBox->addWidget(fooLabel);
+    mainVBox->addWidget(centralWidget);
+    mainVBox->setContentsMargins(0, 0, 0, 0);
+
+    hbox->addWidget(mainBox);
 
     setCentralWidget(central);
 
