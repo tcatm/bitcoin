@@ -53,7 +53,7 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
 
   iconHolder = new QHBoxLayout;
   iconHolder->setSpacing(0);
-  iconHolder->setContentsMargins(0, 4, 0, 4);
+  iconHolder->setContentsMargins(0, 8, 0, 8);
 
   iconBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
   iconBox->setLayout(iconHolder);

@@ -144,9 +144,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     setCentralWidget(central);
 
-    // Create status bar
-    statusBar();
-
     // notification icons
     labelEncryptionIcon = new QLabel();
     labelConnectionsIcon = new QLabel();
@@ -162,8 +159,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     progressBar->setToolTip(tr("Block chain synchronization in progress"));
     progressBar->setVisible(false);
 
-    statusBar()->addWidget(progressBarLabel);
-    statusBar()->addWidget(progressBar);
+    mainVBox->addWidget(progressBarLabel);
+    mainVBox->addWidget(progressBar);
 
     syncIconMovie = new QMovie(":/movies/update_spinner", "mng", this);
 
