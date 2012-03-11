@@ -64,12 +64,13 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
 
   iconHolder = new QHBoxLayout;
   iconHolder->setSpacing(8);
-  iconHolder->setContentsMargins(8, 8, 8, 8);
+  iconHolder->setContentsMargins(0, 0, 8, 0);
 
   iconBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
   iconBox->setLayout(iconHolder);
 
-  sidebar->addWidget(iconBox);
+  //  sidebar->addWidget(iconBox);
+  boxWalletLabel->layout()->addWidget(iconBox);
 }
 
 Sidebar::~Sidebar()

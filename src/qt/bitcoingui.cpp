@@ -150,6 +150,10 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // notification icons
     labelConnectionsIcon = new QLabel();
     labelBlocksIcon = new QLabel();
+
+    labelConnectionsIcon->setProperty("class", "icon");
+    labelBlocksIcon->setProperty("class", "icon");
+
     sidebar->iconHolder->addWidget(labelConnectionsIcon);
     sidebar->iconHolder->addWidget(labelBlocksIcon);
 
@@ -449,7 +453,7 @@ void BitcoinGUI::setNumConnections(int count)
     case 7: case 8: case 9: icon = ":/icons/connect_3"; break;
     default: icon = ":/icons/connect_4"; break;
     }
-    labelConnectionsIcon->setPixmap(QIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+    labelConnectionsIcon->setPixmap(QIcon(icon).pixmap(STATUSBAR_ICONSIZE,12));
     labelConnectionsIcon->setToolTip(tr("%n active connection(s) to Bitcoin network", "", count));
 }
 
@@ -516,7 +520,7 @@ void BitcoinGUI::setNumBlocks(int count)
     if(secs < 30*60)
     {
         tooltip = tr("Up to date") + QString(".\n") + tooltip;
-        labelBlocksIcon->setPixmap(QIcon(":/icons/synced").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelBlocksIcon->setPixmap(QIcon(":/icons/synced").pixmap(12,12));
     }
     else
     {
