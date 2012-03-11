@@ -465,6 +465,7 @@ void BitcoinGUI::setNumBlocks(int count)
 {
     if(!clientModel)
         return;
+    int initTotal = clientModel->getNumBlocksAtStartup();
     int total = clientModel->getNumBlocksOfPeers();
     QString tooltip;
 
@@ -481,6 +482,7 @@ void BitcoinGUI::setNumBlocks(int count)
         progressBarLabel->setVisible(true);
         progressBarLabel->setText(tr("SYNCHRONIZING"));
         progressBar->setVisible(true);
+        progressBar->setMinimum(initTotal);
         progressBar->setMaximum(total);
         progressBar->setValue(count);
 
