@@ -65,8 +65,8 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   QWidget *iconBox = new QWidget;
 
   iconHolder = new QHBoxLayout;
-  iconHolder->setSpacing(0);
-  iconHolder->setContentsMargins(0, 8, 0, 8);
+  iconHolder->setSpacing(8);
+  iconHolder->setContentsMargins(8, 8, 8, 8);
 
   iconBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
   iconBox->setLayout(iconHolder);
