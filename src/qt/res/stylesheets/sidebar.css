@@ -30,11 +30,15 @@ QToolButton:checked {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-#sidebar QLabel {
+#sidebar QLabel.section {
   color: #707e8c;
-  padding: 0.5em 0.5em 0;
+  padding: 0.5em 0 0 0.5em;
   font-weight: bold;
   font-size: 7.5pt;
+}
+
+#sidebar QLabel.icon {
+  padding: 0.5em 0 0 0;
 }
 
 #sidebar #balance {

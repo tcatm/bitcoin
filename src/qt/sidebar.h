@@ -36,6 +36,7 @@ public:
     void createSidebarButtons(QToolBar *toolbar, BitcoinGUI *gui);
 
     QHBoxLayout *iconHolder;
+    QLabel *labelEncryptionIcon;
 
 public slots:
     void setBalance(qint64 balance, qint64 unconfirmedBalance);

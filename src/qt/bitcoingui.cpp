@@ -145,10 +145,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     setCentralWidget(central);
 
     // notification icons
-    labelEncryptionIcon = new QLabel();
     labelConnectionsIcon = new QLabel();
     labelBlocksIcon = new QLabel();
-    sidebar->iconHolder->addWidget(labelEncryptionIcon);
     sidebar->iconHolder->addWidget(labelConnectionsIcon);
     sidebar->iconHolder->addWidget(labelBlocksIcon);
 
@@ -733,23 +731,23 @@ void BitcoinGUI::setEncryptionStatus(int status)
     switch(status)
     {
     case WalletModel::Unencrypted:
-        labelEncryptionIcon->hide();
+        sidebar->labelEncryptionIcon->hide();
         encryptWalletAction->setChecked(false);
         changePassphraseAction->setEnabled(false);
         encryptWalletAction->setEnabled(true);
         break;
     case WalletModel::Unlocked:
-        labelEncryptionIcon->show();
-        labelEncryptionIcon->setPixmap(QIcon(":/icons/lock_open").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked</b>"));
+        sidebar->labelEncryptionIcon->show();
+        sidebar->labelEncryptionIcon->setPixmap(QIcon(":/icons/lock_open").pixmap(12, 12));
+        sidebar->labelEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked</b>"));
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
         encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported
         break;
     case WalletModel::Locked:
-        labelEncryptionIcon->show();
-        labelEncryptionIcon->setPixmap(QIcon(":/icons/lock_closed").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>locked</b>"));
+        sidebar->labelEncryptionIcon->show();
+        sidebar->labelEncryptionIcon->setPixmap(QIcon(":/icons/lock_closed").pixmap(12, 12));
+        sidebar->labelEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>locked</b>"));
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
         encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported

@@ -33,18 +33,31 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
 
   createSidebarButtons(toolbar, gui);
 
+  QWidget *boxWalletLabel = new QWidget;
+  boxWalletLabel->setLayout(new QHBoxLayout);
+  boxWalletLabel->layout()->setContentsMargins(0, 0, 0, 0);
+  boxWalletLabel->layout()->setSpacing(0);
+
+  labelEncryptionIcon = new QLabel;
+  labelEncryptionIcon->setProperty("class", "icon");
+
   QLabel *walletLabel = new QLabel(tr("MY WALLET"));
   walletLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+  walletLabel->setProperty("class", "section");
+
+  boxWalletLabel->layout()->addWidget(walletLabel);
+  boxWalletLabel->layout()->addWidget(labelEncryptionIcon);
 
   QLabel *toolbarLabel = new QLabel(tr("VIEWS"));
   toolbarLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+  toolbarLabel->setProperty("class", "section");
 
   balanceLabel = new QLabel(tr("12,345.12345678 BTC"));
   balanceLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
   balanceLabel->setAlignment(Qt::AlignRight);
   balanceLabel->setObjectName("balance");
 
-  sidebar->addWidget(walletLabel);
+  sidebar->addWidget(boxWalletLabel);
   sidebar->addWidget(balanceLabel);
   sidebar->addWidget(toolbarLabel);
   sidebar->addWidget(toolbar);
