@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/stylesheets">
         <file alias="sidebar">res/stylesheets/sidebar.css</file>
+	<file alias="main">res/stylesheets/main.css</file>
     </qresource>
     <qresource prefix="/icons" lang="edit">
         <file alias="bitcoin">res/icons/bitcoin.png</file>

@@ -1,0 +1,7 @@
+QLabel.warning {
+    background: #fcf8e3;
+    border-radius: 1em;
+    margin: 1em;
+    padding: 0.5em;
+    border: 2px solid #e6d05c;
+}

@@ -79,6 +79,11 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Accept D&D of URIs
     setAcceptDrops(true);
 
+    // Load stylesheet
+    QFile mainQSS(":/stylesheets/main");
+    mainQSS.open(QIODevice::ReadOnly | QIODevice::Text);
+    this->setStyleSheet(mainQSS.readAll());
+
     // Create actions for the toolbar, menu bar and tray/dock icon
     createActions();
 
@@ -136,7 +141,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     labelWarnings = new QLabel;
     labelWarnings->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    labelWarnings->setStyleSheet("background: yellow; padding: 1em");
+    labelWarnings->setWordWrap(true);
+    labelWarnings->setProperty("class", "warning");
     labelWarnings->setVisible(false);
 
     mainVBox->addWidget(labelWarnings);
