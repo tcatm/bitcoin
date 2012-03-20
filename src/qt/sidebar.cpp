@@ -14,7 +14,7 @@
 Sidebar::Sidebar(BitcoinGUI *gui) :
   QWidget(gui)
 {
-  this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
+  this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
   this->setObjectName("sidebar");
 
   QFile sidebarQSS(":/stylesheets/sidebar");
@@ -60,7 +60,7 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   iconHolder->setSpacing(8);
   iconHolder->setContentsMargins(3, 3, 3, 3);
 
-  iconBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  iconBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
   iconBox->setLayout(iconHolder);
 
   sidebar->addStretch(100);

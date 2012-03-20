@@ -57,3 +57,7 @@ QToolButton:checked {
 #sidebar QProgressBar::chunk:horizontal {
   background: #707e8c;
 }
+
+#sidebar #version {
+  color: #818E99;
+}

@@ -163,6 +163,12 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     sidebar->iconHolder->addWidget(labelConnectionsIcon);
     sidebar->iconHolder->addWidget(labelBlocksIcon);
 
+    QLabel *labelVersion = new QLabel(this->clientModel->formatFullVersion());
+    labelVersion->setObjectName("version");
+
+    sidebar->iconHolder->addStretch();
+    sidebar->iconHolder->addWidget(labelVersion, 0, Qt::AlignBottom);
+
     // Progress bar for blocks download
     progressBarLabel = new QLabel(tr("Synchronizing with network..."));
     progressBarLabel->setVisible(false);
