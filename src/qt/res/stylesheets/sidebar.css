@@ -1,40 +1,38 @@
 QToolBar#toolbar {
-  margin: 0;
+  padding: 0;
   icon-size: 16px 16px;
 }
 
-QToolButton {
+QToolButton, .box {
   margin: 0 1px 0 0;
-  border: none;
-  padding: 2px 1em;
   color: black;
-  font-size: 9pt;
+  font-size: 10pt;
+  border-image: url(:images/button-normal) 12 12 12 12;
+  border: 12px transparent;
+  padding: 5px 10px;
 }
 
 QToolButton:hover {
-  color: #1c4081;
+  border-image: url(:images/button-hover) 12 12 12 12;
 }
 
 QToolButton:checked {
-  background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                              stop:0 #BBC4D5, stop:1 #9DAAC4);
   color: white;
+  border-image: url(:images/button-pressed) 12 12 12 12;
 }
 
 #sidebar {
-  border-right: 1px solid #ACABAB;
-}
-
-#sidebar {
-  background: #DFE4EB;
+  background: #D2DCE4;
   font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+  border: none;
 }
 
 #sidebar QLabel.section {
-  color: #707e8c;
-  padding: 0.5em 0 0 0.5em;
+  color: #3C4043;
   font-weight: bold;
-  font-size: 7.5pt;
+  font-size: 10pt;
+  padding: 5px;
 }
 
 #sidebar QLabel.icon {
@@ -44,6 +42,7 @@ QToolButton:checked {
 #sidebar #balance {
   padding: 0 0.5em;
   font-weight: normal;
+  font-size: 9pt;
 }
 
 #sidebar QProgressBar {

@@ -47,6 +47,9 @@
         <file alias="about">res/images/about.png</file>
         <file alias="splash">res/images/splash2.jpg</file>
         <file alias="qrcode">res/images/qrcode.png</file>
+        <file alias="button-pressed">res/images/button-pressed.png</file>
+        <file alias="button-normal">res/images/button-normal.png</file>
+        <file alias="button-hover">res/images/button-hover.png</file>
         <file alias="dark-leather">res/images/dark_leather.png</file>
         <file alias="darknoise">res/images/darknoise.png</file>
     </qresource>

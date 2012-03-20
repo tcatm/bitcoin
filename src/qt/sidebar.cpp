@@ -22,7 +22,7 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   this->setStyleSheet(sidebarQSS.readAll());
 
   sidebar = new QVBoxLayout;
-  sidebar->setContentsMargins(0, 0, 0, 0);
+  sidebar->setContentsMargins(5, 5, 5, 5);
   this->setLayout(sidebar);
 
   toolbar = new QToolBar;
@@ -32,45 +32,42 @@ Sidebar::Sidebar(BitcoinGUI *gui) :
   toolbar->setObjectName("toolbar");
 
   QWidget *boxWalletLabel = new QWidget;
-  boxWalletLabel->setLayout(new QHBoxLayout);
-  boxWalletLabel->layout()->setContentsMargins(0, 0, 0, 0);
-  boxWalletLabel->layout()->setSpacing(0);
+  boxWalletLabel->setLayout(new QVBoxLayout);
+  boxWalletLabel->setProperty("class", "box");
 
   labelEncryptionIcon = new QLabel;
   labelEncryptionIcon->setProperty("class", "icon");
 
-  QLabel *walletLabel = new QLabel(tr("MY WALLET"));
+  QLabel *walletLabel = new QLabel(tr("My Wallet"));
   walletLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
   walletLabel->setProperty("class", "section");
 
   boxWalletLabel->layout()->addWidget(walletLabel);
-  boxWalletLabel->layout()->addWidget(labelEncryptionIcon);
-
-  QLabel *toolbarLabel = new QLabel(tr("VIEWS"));
-  toolbarLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-  toolbarLabel->setProperty("class", "section");
 
   balanceLabel = new QLabel(tr("12,345.12345678 BTC"));
   balanceLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
   balanceLabel->setAlignment(Qt::AlignRight);
   balanceLabel->setObjectName("balance");
 
+  boxWalletLabel->layout()->addWidget(balanceLabel);
+
   sidebar->addWidget(boxWalletLabel);
-  sidebar->addWidget(balanceLabel);
-  sidebar->addWidget(toolbarLabel);
   sidebar->addWidget(toolbar);
 
   QWidget *iconBox = new QWidget;
 
   iconHolder = new QHBoxLayout;
   iconHolder->setSpacing(8);
-  iconHolder->setContentsMargins(0, 0, 8, 0);
+  iconHolder->setContentsMargins(3, 3, 3, 3);
 
-  iconBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
+  iconBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   iconBox->setLayout(iconHolder);
 
-  //  sidebar->addWidget(iconBox);
-  boxWalletLabel->layout()->addWidget(iconBox);
+  sidebar->addStretch(100);
+
+  sidebar->addWidget(iconBox);
+  iconHolder->addWidget(labelEncryptionIcon);
+  //boxWalletLabel->layout()->addWidget(iconBox);
 }
 
 Sidebar::~Sidebar()
